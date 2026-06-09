@@ -1,4 +1,4 @@
-﻿# Atlas Business Analysis
+﻿# Atlas Business Analysis.
 
 Version: V1
 

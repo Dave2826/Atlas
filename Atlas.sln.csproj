@@ -80,7 +80,6 @@
     <Folder Include="docs\05-Database\" />
     <Folder Include="docs\06-Roadmap\" />
     <Folder Include="docs\07-Decisions\" />
-    <Folder Include="docs\02-BusinessAnalysis\" />
     <Folder Include="docs\01-Vision\" />
     <Folder Include="Atlas\DTOs\" />
     <Folder Include="Atlas\Data\" />
