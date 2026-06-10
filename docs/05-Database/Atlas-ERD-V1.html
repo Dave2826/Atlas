@@ -1,0 +1,219 @@
+
+<div id="erd" style="padding: 1rem 0"></div>
+<script type="module">
+import mermaid from 'https://esm.sh/mermaid@11/dist/mermaid.esm.min.mjs';
+const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+await document.fonts.ready;
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'base',
+  fontFamily: '"Anthropic Sans", sans-serif',
+  themeVariables: {
+    darkMode: dark,
+    fontSize: '15px',
+    fontFamily: '"Anthropic Sans", sans-serif',
+    lineColor: dark ? '#9c9a92' : '#73726c',
+    textColor: dark ? '#c2c0b6' : '#3d3d3a',
+    primaryColor: dark ? '#2a2a28' : '#f5f4ef',
+    primaryBorderColor: dark ? '#5a5a56' : '#c8c6bc',
+    attributeBackgroundColorEven: dark ? '#222220' : '#fafaf7',
+    attributeBackgroundColorOdd: dark ? '#1a1a18' : '#f0efea',
+  },
+});
+
+const diagram = `erDiagram
+  Department {
+    int DepartmentId PK
+    string Name
+    string Description
+    bool IsActive
+  }
+  ProductType {
+    int ProductTypeId PK
+    string Name
+    string Description
+    bool IsActive
+  }
+  Product {
+    int ProductId PK
+    int DepartmentId FK
+    int ProductTypeId FK
+    string Name
+    string BrandName
+    string Description
+    decimal BaseSalePrice
+    decimal CostPrice
+    string Status
+    datetime CreatedAt
+    datetime UpdatedAt
+  }
+  ProductSizeStock {
+    int ProductSizeStockId PK
+    int ProductId FK
+    string Size
+    int Quantity
+    decimal PriceAdjustment
+    string Status
+  }
+  Customer {
+    int CustomerId PK
+    string FirstName
+    string LastName
+    string Phone
+    string Notes
+    datetime CreatedAt
+  }
+  Layaway {
+    int LayawayId PK
+    int CustomerId FK
+    datetime CreatedAt
+    datetime ExpirationDate
+    string Status
+    string Notes
+  }
+  LayawayItem {
+    int LayawayItemId PK
+    int LayawayId FK
+    int ProductSizeStockId FK
+    int Quantity
+    decimal OriginalPrice
+    decimal PaidAmount
+    string Status
+  }
+  LayawayPayment {
+    int LayawayPaymentId PK
+    int LayawayId FK
+    int LayawayItemId FK "nullable"
+    string PaymentMethod
+    decimal Amount
+    datetime CreatedAt
+    string Notes
+  }
+  Voucher {
+    int VoucherId PK
+    int CustomerId FK
+    decimal OriginalAmount
+    decimal RemainingAmount
+    datetime ExpirationDate
+    string Status
+    string SourceType
+    int SourceId
+    datetime CreatedAt
+  }
+  VoucherTransaction {
+    int VoucherTransactionId PK
+    int VoucherId FK
+    decimal Amount
+    string TransactionType
+    int ReferenceId
+    datetime CreatedAt
+  }
+  Sale {
+    int SaleId PK
+    int CustomerId FK "nullable"
+    int UserId FK
+    decimal TotalAmount
+    datetime CreatedAt
+  }
+  SaleDetail {
+    int SaleDetailId PK
+    int SaleId FK
+    int ProductSizeStockId FK
+    int Quantity
+    decimal UnitPrice
+    decimal Subtotal
+  }
+  SalePayment {
+    int SalePaymentId PK
+    int SaleId FK
+    string PaymentMethod
+    decimal Amount
+    int VoucherId FK "nullable"
+  }
+  SpecialOrder {
+    int SpecialOrderId PK
+    int CustomerId FK "nullable"
+    int LayawayItemId FK "nullable"
+    string OrderType
+    string RequestedItem
+    string Notes
+    string Status
+    datetime CreatedAt
+  }
+  CashSession {
+    int CashSessionId PK
+    int UserId FK
+    decimal OpeningAmount
+    decimal ClosingAmount
+    datetime OpenedAt
+    datetime ClosedAt
+  }
+  Expense {
+    int ExpenseId PK
+    int CashSessionId FK
+    string Description
+    decimal Amount
+    datetime CreatedAt
+  }
+  Role {
+    int RoleId PK
+    string Name
+  }
+  User {
+    int UserId PK
+    int RoleId FK
+    string Username
+    string PasswordHash
+    bool IsActive
+  }
+
+  Department ||--o{ Product : ""
+  ProductType ||--o{ Product : ""
+  Product ||--o{ ProductSizeStock : ""
+  Customer ||--o{ Layaway : ""
+  Customer ||--o{ Voucher : ""
+  Customer }o--o{ SpecialOrder : ""
+  Customer }o--o{ Sale : ""
+  Layaway ||--o{ LayawayItem : ""
+  Layaway ||--o{ LayawayPayment : ""
+  LayawayItem }o--o| LayawayPayment : ""
+  LayawayItem }o--o| SpecialOrder : ""
+  Voucher ||--o{ VoucherTransaction : ""
+  Sale ||--o{ SaleDetail : ""
+  Sale ||--o{ SalePayment : ""
+  SalePayment }o--o| Voucher : ""
+  ProductSizeStock ||--o{ SaleDetail : ""
+  ProductSizeStock ||--o{ LayawayItem : ""
+  Role ||--o{ User : ""
+  User ||--o{ Sale : ""
+  User ||--o{ CashSession : ""
+  CashSession ||--o{ Expense : ""
+`;
+
+const { svg } = await mermaid.render('erd-svg', diagram);
+document.getElementById('erd').innerHTML = svg;
+
+document.querySelectorAll('#erd svg .node').forEach(node => {
+  const firstPath = node.querySelector('path[d]');
+  if (!firstPath) return;
+  const d = firstPath.getAttribute('d');
+  const nums = d.match(/-?[\d.]+/g)?.map(Number);
+  if (!nums || nums.length < 8) return;
+  const xs = [nums[0], nums[2], nums[4], nums[6]];
+  const ys = [nums[1], nums[3], nums[5], nums[7]];
+  const x = Math.min(...xs), y = Math.min(...ys);
+  const w = Math.max(...xs) - x, h = Math.max(...ys) - y;
+  const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  rect.setAttribute('x', x); rect.setAttribute('y', y);
+  rect.setAttribute('width', w); rect.setAttribute('height', h);
+  rect.setAttribute('rx', '8');
+  for (const a of ['fill', 'stroke', 'stroke-width', 'class', 'style']) {
+    if (firstPath.hasAttribute(a)) rect.setAttribute(a, firstPath.getAttribute(a));
+  }
+  firstPath.replaceWith(rect);
+});
+
+document.querySelectorAll('#erd svg .row-rect-odd path, #erd svg .row-rect-even path').forEach(p => {
+  p.setAttribute('stroke', 'none');
+});
+</script>
