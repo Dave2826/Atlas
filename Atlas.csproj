@@ -9,6 +9,7 @@
   <ItemGroup>
     <Folder Include="Atlas\Data\Configurations\" />
     <Folder Include="Atlas\Data\Migrations\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>

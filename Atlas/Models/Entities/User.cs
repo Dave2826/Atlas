@@ -14,4 +14,7 @@ public class User
 
     // Navigation Property
     public Role Role { get; set; } = null!;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public DateTime? LastLoginAt { get; set; }
 }
