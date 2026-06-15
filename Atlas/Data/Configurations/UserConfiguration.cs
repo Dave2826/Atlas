@@ -21,6 +21,20 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.IsActive)
             .HasDefaultValue(true);
 
+        // Seed data
+        builder.HasData(
+            new User 
+            { 
+                UserId = 1, 
+                Username = "admin", 
+                PasswordHash = "$2a$12$RjkXAdYI5.5Jk8HmVFvQ.OO9L0jZ7HfD5GfQqHd5Xr2KvJ8hYbN2e", 
+                RoleId = 1,
+                IsActive = true,
+                CreatedAt = new DateTime(2026, 6, 15, 0, 0, 0, DateTimeKind.Utc),
+                LastLoginAt = null
+            }
+        );
+
         // Relationship: User (many) -> Role (one)
         builder.HasOne(u => u.Role)
             .WithMany()

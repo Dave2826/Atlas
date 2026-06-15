@@ -14,6 +14,20 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
             .IsRequired()
             .HasMaxLength(100);
 
+        // Seed data
+        builder.HasData(
+            new Role
+            {
+                RoleId = 1,
+                Name = "Administrator"
+            },
+            new Role
+            {
+                RoleId = 2,
+                Name = "Employee"
+            }
+        );
+
         // Prevent cascade delete from Role -> Users
         
     }
