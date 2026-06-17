@@ -13,6 +13,10 @@ public class Product
 
     public string? BrandName { get; set; }
 
+    public string SKU { get; set; } = string.Empty;
+
+    public string? Color { get; set; }
+
     public string? Description { get; set; }
 
     public decimal BaseSalePrice { get; set; }

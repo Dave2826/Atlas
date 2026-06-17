@@ -16,6 +16,16 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.Property(p => p.BrandName)
             .HasMaxLength(200);
+            
+        builder.Property(p => p.SKU)
+            .IsRequired()
+            .HasMaxLength(50);
+            
+        builder.HasIndex(p => p.SKU)
+            .IsUnique();
+
+        builder.Property(p => p.Color)
+            .HasMaxLength(30);
 
         builder.Property(p => p.Description)
             .HasMaxLength(1000);
