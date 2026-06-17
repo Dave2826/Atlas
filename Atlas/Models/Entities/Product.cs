@@ -31,9 +31,9 @@ public class Product
 
     // Navigation Properties
 
-    public Department Department { get; set; } = null!;
+    public Department? Department { get; set; }
 
-    public ProductType ProductType { get; set; } = null!;
+    public ProductType? ProductType { get; set; }
 
     public ICollection<ProductSizeStock> ProductSizeStocks { get; set; }
         = new List<ProductSizeStock>();
