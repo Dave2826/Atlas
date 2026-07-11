@@ -1,5 +1,4 @@
 ﻿using Atlas.Models.Enums;
-using static System.Environment;
 
 namespace Atlas.Models.Entities;
 

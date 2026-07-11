@@ -37,17 +37,6 @@ public class AuthController : Controller
             .Include(u => u.Role)
             .FirstOrDefaultAsync(u => u.Username == model.Username);
 
-        Console.WriteLine($"[DEBUG] User found: {user != null}");
-        if (user != null)
-        {
-            Console.WriteLine($"[DEBUG] Username: {user.Username}");
-            Console.WriteLine($"[DEBUG] IsActive: {user.IsActive}");
-            Console.WriteLine($"[DEBUG] PasswordHash length: {user.PasswordHash?.Length ?? 0}");
-            
-            var testVerify = BCrypt.Net.BCrypt.Verify("Atlas2026", user.PasswordHash);
-            Console.WriteLine($"[DEBUG] Test verification result (Atlas2026): {testVerify}");
-        }
-
         if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
         {
             ModelState.AddModelError("", "Usuario o contraseña incorrectos.");

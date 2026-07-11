@@ -43,15 +43,6 @@ public class ProductController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Product product)
     {
-        foreach (var state in ModelState)
-        {
-            foreach (var error in state.Value.Errors)
-            {
-                Console.WriteLine($"KEY={state.Key}");
-                Console.WriteLine($"ERROR={error.ErrorMessage}");
-            }
-        }
-
         if (ModelState.IsValid)
         {
             _context.Add(product);

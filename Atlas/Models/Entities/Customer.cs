@@ -1,6 +1,4 @@
-﻿using static System.Environment;
-
-namespace Atlas.Models.Entities;
+﻿namespace Atlas.Models.Entities;
 
 public class Customer
 {
