@@ -18,6 +18,8 @@ public class AtlasDbContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AtlasDbContext).Assembly);
     }
 
+    public DbSet<Brand> Brands => Set<Brand>();
+
     public DbSet<Department> Departments => Set<Department>();
 
     public DbSet<ProductType> ProductTypes => Set<ProductType>();
