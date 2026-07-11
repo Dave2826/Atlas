@@ -1,0 +1,41 @@
+@model Atlas.Models.Entities.Department
+
+@{
+    ViewData["Title"] = "Desactivar Departamento";
+}
+
+<h1>Desactivar Departamento</h1>
+
+<h3>¿Está seguro que desea desactivar este departamento?</h3>
+
+@if (ViewBag.ProductCount > 0)
+{
+    <div class="alert alert-warning">
+        <strong>Atención:</strong> Este departamento tiene <strong>@ViewBag.ProductCount producto(s)</strong> asociado(s).
+        Los productos existentes conservarán su referencia a este departamento.
+    </div>
+}
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="DepartmentId" />
+        <input type="submit" value="Desactivar" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
