@@ -1,4 +1,4 @@
-# ADR-0001: Arquitectura inicial del proyecto
+# ADR-000: Arquitectura inicial del proyecto
 
 **Estado**: Aceptado
 
