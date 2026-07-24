@@ -12,4 +12,7 @@ public class ProductType
 
     public ICollection<ProductTypeSize> ProductTypeSizes { get; set; }
         = new List<ProductTypeSize>();
+
+    public ICollection<Product> Products { get; set; }
+        = new List<Product>();
 }

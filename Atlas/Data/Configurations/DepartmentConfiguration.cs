@@ -19,11 +19,5 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
 
         builder.Property(d => d.IsActive)
             .HasDefaultValue(true);
-        
-        // Configure delete behavior: do not cascade delete Products when a Department is removed
-        builder.HasMany<Atlas.Models.Entities.Product>()
-            .WithOne(p => p.Department)
-            .HasForeignKey(p => p.DepartmentId)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 }

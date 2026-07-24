@@ -12,25 +12,35 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.Property(p => p.Name)
             .IsRequired()
-            .HasMaxLength(200);
-
-        builder.Property(p => p.BrandName)
-            .HasMaxLength(200);
-            
-        builder.Property(p => p.SKU)
-            .IsRequired()
-            .HasMaxLength(50);
-            
-        builder.HasIndex(p => p.SKU)
-            .IsUnique();
-
-        builder.Property(p => p.Color)
-            .HasMaxLength(30);
+            .HasMaxLength(150);
 
         builder.Property(p => p.Description)
-            .HasMaxLength(1000);
+            .HasMaxLength(500);
 
-        // Prevent cascade delete from Product -> ProductSizeStock
-        
+        builder.Property(p => p.InternalCode)
+            .HasMaxLength(50);
+
+        builder.Property(p => p.ImageUrl)
+            .HasMaxLength(300);
+
+        builder.Property(p => p.IsActive)
+            .HasDefaultValue(true);
+
+        builder.Property(p => p.CreatedAt)
+            .HasDefaultValueSql("NOW()");
+
+        builder.HasOne(p => p.Brand)
+            .WithMany(b => b.Products)
+            .HasForeignKey(p => p.BrandId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(p => p.ProductType)
+            .WithMany(pt => pt.Products)
+            .HasForeignKey(p => p.ProductTypeId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(p => p.BrandId);
+
+        builder.HasIndex(p => p.ProductTypeId);
     }
 }

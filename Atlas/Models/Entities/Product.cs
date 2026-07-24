@@ -1,37 +1,28 @@
 ﻿namespace Atlas.Models.Entities;
-using Atlas.Models.Enums;
 
 public class Product
 {
     public int ProductId { get; set; }
 
-    public int DepartmentId { get; set; }
-
-    public int ProductTypeId { get; set; }
-
     public string Name { get; set; } = string.Empty;
-
-    public string? BrandName { get; set; }
-
-    public string SKU { get; set; } = string.Empty;
-
-    public string? Color { get; set; }
 
     public string? Description { get; set; }
 
-    public decimal BaseSalePrice { get; set; }
+    public string? InternalCode { get; set; }
 
-    public decimal CostPrice { get; set; }
+    public string? ImageUrl { get; set; }
 
-    public ProductStatus Status { get; set; }
+    public int BrandId { get; set; }
+
+    public int ProductTypeId { get; set; }
+
+    public bool IsActive { get; set; } = true;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? UpdatedAt { get; set; }
 
-    // Navigation Properties
-
-    public Department? Department { get; set; }
+    public Brand? Brand { get; set; }
 
     public ProductType? ProductType { get; set; }
 

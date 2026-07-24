@@ -130,8 +130,6 @@ public class DepartmentController : Controller
         if (department == null)
             return NotFound();
 
-        ViewBag.ProductCount = await _context.Products.CountAsync(p => p.DepartmentId == id);
-
         return View(department);
     }
 

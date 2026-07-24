@@ -12,11 +12,6 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="SKU" class="control-label">SKU</label>
-                <input asp-for="SKU" class="form-control" />
-                <span asp-validation-for="SKU" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Name" class="control-label">Nombre</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
@@ -27,40 +22,28 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BrandName" class="control-label">Marca</label>
-                <input asp-for="BrandName" class="form-control" />
-                <span asp-validation-for="BrandName" class="text-danger"></span>
-            </div>
-<div class="form-group">
-    <label asp-for="Color" class="control-label">Color</label>
-    <input asp-for="Color" class="form-control" />
-    <span asp-validation-for="Color" class="text-danger"></span>
-</div>
-
-<div class="form-group">
-    <label asp-for="DepartmentId" class="control-label">Departamento</label>
-    <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.Departments">
-        <option value="">-- Seleccionar --</option>
-    </select>
-    <span asp-validation-for="DepartmentId" class="text-danger"></span>
-</div>
-
-<div class="form-group">
-    <label asp-for="ProductTypeId" class="control-label">Tipo de producto</label>
-    <select asp-for="ProductTypeId" class="form-control" asp-items="ViewBag.ProductTypes">
-        <option value="">-- Seleccionar --</option>
-    </select>
-    <span asp-validation-for="ProductTypeId" class="text-danger"></span>
-</div>
-            <div class="form-group">
-                <label asp-for="CostPrice" class="control-label">Precio de compra</label>
-                <input asp-for="CostPrice" class="form-control" />
-                <span asp-validation-for="CostPrice" class="text-danger"></span>
+                <label asp-for="InternalCode" class="control-label">Código interno</label>
+                <input asp-for="InternalCode" class="form-control" />
+                <span asp-validation-for="InternalCode" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BaseSalePrice" class="control-label">Precio de venta</label>
-                <input asp-for="BaseSalePrice" class="form-control" />
-                <span asp-validation-for="BaseSalePrice" class="text-danger"></span>
+                <label asp-for="ImageUrl" class="control-label">URL de imagen</label>
+                <input asp-for="ImageUrl" class="form-control" />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BrandId" class="control-label">Marca</label>
+                <select asp-for="BrandId" class="form-control" asp-items="ViewBag.Brands">
+                    <option value="">-- Seleccionar --</option>
+                </select>
+                <span asp-validation-for="BrandId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductTypeId" class="control-label">Tipo de producto</label>
+                <select asp-for="ProductTypeId" class="form-control" asp-items="ViewBag.ProductTypes">
+                    <option value="">-- Seleccionar --</option>
+                </select>
+                <span asp-validation-for="ProductTypeId" class="text-danger"></span>
             </div>
             <div class="form-group mt-3">
                 <input type="submit" value="Crear" class="btn btn-primary" />

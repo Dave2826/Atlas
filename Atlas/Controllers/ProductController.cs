@@ -20,15 +20,16 @@ public class ProductController : Controller
     public async Task<IActionResult> Index()
     {
         return View(await _context.Products
+            .Include(p => p.Brand)
             .Include(p => p.ProductType)
             .ToListAsync());
     }
 
     public IActionResult Create()
     {
-        ViewBag.Departments = new SelectList(
-            _context.Departments.ToList(),
-            "DepartmentId",
+        ViewBag.Brands = new SelectList(
+            _context.Brands.ToList(),
+            "BrandId",
             "Name");
 
         ViewBag.ProductTypes = new SelectList(
@@ -50,9 +51,9 @@ public class ProductController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        ViewBag.Departments = new SelectList(
-            _context.Departments.ToList(),
-            "DepartmentId",
+        ViewBag.Brands = new SelectList(
+            _context.Brands.ToList(),
+            "BrandId",
             "Name");
 
         ViewBag.ProductTypes = new SelectList(
@@ -66,18 +67,15 @@ public class ProductController : Controller
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null)
-        {
             return NotFound();
-        }
 
         var product = await _context.Products
+            .Include(p => p.Brand)
             .Include(p => p.ProductType)
             .FirstOrDefaultAsync(m => m.ProductId == id);
 
         if (product == null)
-        {
             return NotFound();
-        }
 
         return View(product);
     }
@@ -85,22 +83,18 @@ public class ProductController : Controller
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
-        {
             return NotFound();
-        }
 
         var product = await _context.Products.FindAsync(id);
 
         if (product == null)
-        {
             return NotFound();
-        }
 
-        ViewBag.Departments = new SelectList(
-            _context.Departments.ToList(),
-            "DepartmentId",
+        ViewBag.Brands = new SelectList(
+            _context.Brands.ToList(),
+            "BrandId",
             "Name",
-            product.DepartmentId);
+            product.BrandId);
 
         ViewBag.ProductTypes = new SelectList(
             _context.ProductTypes.ToList(),
@@ -116,9 +110,7 @@ public class ProductController : Controller
     public async Task<IActionResult> Edit(int id, Product product)
     {
         if (id != product.ProductId)
-        {
             return NotFound();
-        }
 
         if (ModelState.IsValid)
         {
@@ -130,9 +122,7 @@ public class ProductController : Controller
             catch (DbUpdateConcurrencyException)
             {
                 if (!ProductExists(product.ProductId))
-                {
                     return NotFound();
-                }
 
                 throw;
             }
@@ -146,17 +136,13 @@ public class ProductController : Controller
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null)
-        {
             return NotFound();
-        }
 
         var product = await _context.Products
             .FirstOrDefaultAsync(m => m.ProductId == id);
 
         if (product == null)
-        {
             return NotFound();
-        }
 
         return View(product);
     }

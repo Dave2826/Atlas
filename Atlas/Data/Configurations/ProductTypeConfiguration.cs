@@ -20,8 +20,7 @@ public class ProductTypeConfiguration : IEntityTypeConfiguration<ProductType>
         builder.Property(pt => pt.IsActive)
             .HasDefaultValue(true);
 
-        // Prevent cascade delete from ProductType -> Products
-        builder.HasMany<Atlas.Models.Entities.Product>()
+        builder.HasMany(pt => pt.Products)
             .WithOne(p => p.ProductType)
             .HasForeignKey(p => p.ProductTypeId)
             .OnDelete(DeleteBehavior.Restrict);

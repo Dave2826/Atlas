@@ -12,11 +12,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th>SKU</th>
             <th>Nombre</th>
             <th>Marca</th>
-            <th>Color</th>
-            <th>Precio de venta</th>
+            <th>Tipo</th>
             <th></th>
         </tr>
     </thead>
@@ -24,23 +22,17 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.SKU)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BrandName)
+                @Html.DisplayFor(modelItem => item.Brand!.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Color)
+                @Html.DisplayFor(modelItem => item.ProductType!.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BaseSalePrice)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-sm btn-warning">Editar</a> 
-                <a asp-action="Details" asp-route-id="@item.ProductId" class="btn btn-sm btn-info">Detalles</a> 
+                <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-sm btn-warning">Editar</a>
+                <a asp-action="Details" asp-route-id="@item.ProductId" class="btn btn-sm btn-info">Detalles</a>
                 <a asp-action="Delete" asp-route-id="@item.ProductId" class="btn btn-sm btn-danger">Eliminar</a>
             </td>
         </tr>
