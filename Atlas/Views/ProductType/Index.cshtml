@@ -61,6 +61,7 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.ProductTypeId" class="btn btn-sm btn-warning">Editar</a>
                     <a asp-action="Details" asp-route-id="@item.ProductTypeId" class="btn btn-sm btn-info">Detalles</a>
+                    <a asp-action="ManageSizes" asp-route-id="@item.ProductTypeId" class="btn btn-sm btn-primary">Tallas</a>
                     @if (item.IsActive)
                     {
                         <a asp-action="Delete" asp-route-id="@item.ProductTypeId" class="btn btn-sm btn-danger">Desactivar</a>

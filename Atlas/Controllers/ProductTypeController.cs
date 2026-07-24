@@ -1,5 +1,6 @@
 using Atlas.Data;
 using Atlas.Models.Entities;
+using Atlas.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -167,6 +168,93 @@ public class ProductTypeController : Controller
         }
 
         return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> ManageSizes(int id)
+    {
+        var productType = await _context.ProductTypes.FindAsync(id);
+
+        if (productType == null)
+            return NotFound();
+
+        var allSizes = await _context.Sizes
+            .Where(s => s.IsActive)
+            .OrderBy(s => s.DisplayOrder)
+            .ThenBy(s => s.Name)
+            .ToListAsync();
+
+        var associatedSizeIds = await _context.ProductTypeSizes
+            .Where(pts => pts.ProductTypeId == id)
+            .Select(pts => pts.SizeId)
+            .ToListAsync();
+
+        var viewModel = new ProductTypeSizeViewModel
+        {
+            ProductTypeId = productType.ProductTypeId,
+            ProductTypeName = productType.Name,
+            Sizes = allSizes.Select(s => new SizeCheckItem
+            {
+                SizeId = s.SizeId,
+                Name = s.Name,
+                DisplayOrder = s.DisplayOrder,
+                IsSelected = associatedSizeIds.Contains(s.SizeId)
+            }).ToList()
+        };
+
+        return View(viewModel);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ManageSizes(int id, ProductTypeSizeViewModel model)
+    {
+        var productType = await _context.ProductTypes.FindAsync(id);
+
+        if (productType == null)
+            return NotFound();
+
+        if (model.Sizes == null || !model.Sizes.Any(s => s.IsSelected))
+        {
+            var allSizes = await _context.Sizes
+                .Where(s => s.IsActive)
+                .OrderBy(s => s.DisplayOrder)
+                .ThenBy(s => s.Name)
+                .ToListAsync();
+
+            model.ProductTypeName = productType.Name;
+            model.Sizes = allSizes.Select(s => new SizeCheckItem
+            {
+                SizeId = s.SizeId,
+                Name = s.Name,
+                DisplayOrder = s.DisplayOrder,
+                IsSelected = model.Sizes?.FirstOrDefault(m => m.SizeId == s.SizeId)?.IsSelected ?? false
+            }).ToList();
+
+            ModelState.AddModelError(string.Empty, "Debe seleccionar al menos una talla.");
+            return View(model);
+        }
+
+        var existingRelations = await _context.ProductTypeSizes
+            .Where(pts => pts.ProductTypeId == id)
+            .ToListAsync();
+
+        _context.ProductTypeSizes.RemoveRange(existingRelations);
+
+        var selectedSizeIds = model.Sizes.Where(s => s.IsSelected).Select(s => s.SizeId);
+
+        foreach (var sizeId in selectedSizeIds)
+        {
+            _context.ProductTypeSizes.Add(new ProductTypeSize
+            {
+                ProductTypeId = id,
+                SizeId = sizeId
+            });
+        }
+
+        await _context.SaveChangesAsync();
+
+        TempData["SuccessMessage"] = "Tallas actualizadas correctamente.";
+        return RedirectToAction(nameof(ManageSizes), new { id });
     }
 
     private bool ProductTypeExists(int id)

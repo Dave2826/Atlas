@@ -1,0 +1,67 @@
+@model Atlas.Models.ViewModels.ProductTypeSizeViewModel
+
+@{
+    ViewData["Title"] = "Administrar Tallas";
+}
+
+<h1>Administrar Tallas</h1>
+
+<h4 class="text-muted mb-3">@Model.ProductTypeName</h4>
+
+<p class="text-secondary">Seleccione las tallas disponibles para este tipo de producto.</p>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<hr />
+
+<form asp-action="ManageSizes" method="post">
+    <input type="hidden" asp-for="ProductTypeId" />
+    <input type="hidden" asp-for="ProductTypeName" />
+
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <div class="mb-3">
+        <button type="button" class="btn btn-outline-primary btn-sm me-2" onclick="selectAll()">Seleccionar todas</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="clearAll()">Limpiar</button>
+    </div>
+
+    <div class="row">
+        @foreach (var size in Model.Sizes)
+        {
+            <div class="col-md-3 mb-2">
+                <div class="form-check">
+                    <input type="hidden" name="Sizes[@(Model.Sizes.IndexOf(size))].SizeId" value="@size.SizeId" />
+                    <input type="hidden" name="Sizes[@(Model.Sizes.IndexOf(size))].Name" value="@size.Name" />
+                    <input type="hidden" name="Sizes[@(Model.Sizes.IndexOf(size))].DisplayOrder" value="@size.DisplayOrder" />
+                    <input class="form-check-input size-checkbox" type="checkbox"
+                           name="Sizes[@(Model.Sizes.IndexOf(size))].IsSelected"
+                           value="true" @(size.IsSelected ? "checked" : "") />
+                    <label class="form-check-label">@size.Name</label>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        function selectAll() {
+            document.querySelectorAll('.size-checkbox').forEach(cb => cb.checked = true);
+        }
+
+        function clearAll() {
+            document.querySelectorAll('.size-checkbox').forEach(cb => cb.checked = false);
+        }
+    </script>
+}
