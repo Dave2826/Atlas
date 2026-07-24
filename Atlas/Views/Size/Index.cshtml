@@ -1,0 +1,80 @@
+@model IEnumerable<Atlas.Models.Entities.Size>
+
+@{
+    ViewData["Title"] = "Tallas";
+}
+
+<h1>Tallas</h1>
+
+<div class="row mb-3">
+    <div class="col">
+        <span class="badge bg-primary me-2">Total: @ViewBag.TotalCount</span>
+        <span class="badge bg-success me-2">Activos: @ViewBag.ActiveCount</span>
+        <span class="badge bg-secondary">Inactivos: @ViewBag.InactiveCount</span>
+    </div>
+</div>
+
+<form method="get" class="row g-3 mb-3">
+    <div class="col-md-4">
+        <input type="text" name="searchTerm" class="form-control" placeholder="Buscar por nombre..." value="@ViewBag.SearchTerm" />
+    </div>
+    <div class="col-md-3">
+        <select name="statusFilter" class="form-select">
+            <option value="Activos" selected="@(ViewBag.StatusFilter == "Activos")">Activos</option>
+            <option value="Inactivos" selected="@(ViewBag.StatusFilter == "Inactivos")">Inactivos</option>
+            <option value="Todos" selected="@(ViewBag.StatusFilter == "Todos")">Todos</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Buscar</button>
+    </div>
+    <div class="col-md-3 text-end">
+        <a asp-action="Create" class="btn btn-success">Crear Nuevo</a>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Orden</th>
+            <th>Estado</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                <td>@Html.DisplayFor(modelItem => item.DisplayOrder)</td>
+                <td>
+                    @if (item.IsActive)
+                    {
+                        <span class="badge bg-success">Activo</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Inactivo</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.SizeId" class="btn btn-sm btn-warning">Editar</a>
+                    <a asp-action="Details" asp-route-id="@item.SizeId" class="btn btn-sm btn-info">Detalles</a>
+                    @if (item.IsActive)
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.SizeId" class="btn btn-sm btn-danger">Desactivar</a>
+                    }
+                    else
+                    {
+                        <form asp-action="Activate" asp-route-id="@item.SizeId" method="post" style="display:inline">
+                            <button type="submit" class="btn btn-sm btn-success">Activar</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

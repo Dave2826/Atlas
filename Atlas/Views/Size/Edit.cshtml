@@ -1,0 +1,36 @@
+@model Atlas.Models.Entities.Size
+
+@{
+    ViewData["Title"] = "Editar Talla";
+}
+
+<h1>Editar Talla</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="SizeId" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Nombre</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label asp-for="Description" class="control-label">Descripción</label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label asp-for="DisplayOrder" class="control-label">Orden</label>
+                <input asp-for="DisplayOrder" class="form-control" type="number" min="0" />
+                <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-4">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
