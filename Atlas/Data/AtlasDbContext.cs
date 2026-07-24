@@ -30,6 +30,8 @@ public class AtlasDbContext : DbContext
 
     public DbSet<ProductSizeStock> ProductSizeStocks => Set<ProductSizeStock>();
 
+    public DbSet<ProductTypeSize> ProductTypeSizes => Set<ProductTypeSize>();
+
     public DbSet<Customer> Customers => Set<Customer>();
 
     public DbSet<Layaway> Layaways => Set<Layaway>();
